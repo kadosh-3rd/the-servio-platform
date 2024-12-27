@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import RegistrationForm from "@/components/registration-form";
-import "react-phone-number-input/style.css";
 
 export const metadata: Metadata = {
   title: "Register Your Restaurant | Servio",

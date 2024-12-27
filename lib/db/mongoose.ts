@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-// import './models/comment.model';
-// import './models/lens.model';
-// import './models/user.model';
+// import './models/Restaurant';
 
 // Retrieving the MongoDB URI from the environment variables and throwing an error if it is not defined.
 const MONGODB_URI = process.env.MONGODB_URI

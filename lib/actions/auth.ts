@@ -18,11 +18,10 @@ export async function registerRestaurant(
       email: validatedData.email,
     });
 
-    if (existingRestaurant) {
+    if (existingRestaurant)
       return {
         error: "Email already exists",
       };
-    }
 
     await Restaurant.create(validatedData);
     return {
@@ -48,28 +47,23 @@ export async function loginRestaurant(
       email: validatedData.email,
     }).select("+password");
 
-    if (!restaurant) {
+    if (!restaurant)
       return {
         error: "Invalid credentials",
       };
-    }
 
     const isValidPassword = await restaurant.comparePassword(
       validatedData.password
     );
-    if (!isValidPassword) {
+    if (!isValidPassword)
       return {
         error: "Invalid credentials",
       };
-    }
 
     const token = signToken({ restaurantId: restaurant._id });
 
     // Set HTTP-only cookie
-    (
-      await // Set HTTP-only cookie
-      cookies()
-    ).set("token", token, {
+    (await cookies()).set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

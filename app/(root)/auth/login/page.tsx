@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
 import LoginForm from "@/components/login-form";
 import {
   Card,
@@ -56,9 +55,7 @@ export default function LoginPage() {
               <CardDescription>Sign in to your dashboard</CardDescription>
             </CardHeader>
             <CardContent>
-              <Suspense fallback={<div>Loading...</div>}>
-                <LoginForm />
-              </Suspense>
+              <LoginForm />
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <div className="text-sm text-muted-foreground text-center">

@@ -12,6 +12,7 @@ import {
   Home,
   Settings,
   ChevronRight,
+  Menu,
   TypeIcon as type,
   LucideIcon,
 } from "lucide-react";
@@ -20,7 +21,8 @@ export type Icon = LucideIcon;
 
 export const Icons = {
   spinner: Loader2,
-  menu: UtensilsCrossed,
+  menu: Menu,
+  restaurantMenu: UtensilsCrossed,
   logout: LogOut,
   order: ClipboardList,
   revenue: DollarSign,

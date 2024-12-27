@@ -1,11 +1,12 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const restaurantSchema = new mongoose.Schema({
   businessName: {
     type: String,
-    required: [true, 'Business name is required'],
+    required: [true, "Business name is required"],
     trim: true,
+    unique: true,
   },
   ownerName: {
     type: String,
@@ -14,24 +15,24 @@ const restaurantSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, "Email is required"],
     unique: true,
     lowercase: true,
     trim: true,
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
+    required: [true, "Password is required"],
     minlength: 8,
     select: false,
   },
   phoneNumber: {
     type: String,
-    required: [true, 'Phone number is required'],
+    required: [true, "Phone number is required"],
   },
   address: {
     type: String,
-    required: [true, 'Address is required'],
+    required: [true, "Address is required"],
   },
   licenseNumber: String,
   isVerified: {
@@ -46,9 +47,9 @@ const restaurantSchema = new mongoose.Schema({
 });
 
 // Hash password before saving
-restaurantSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
+restaurantSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -59,7 +60,9 @@ restaurantSchema.pre('save', async function(next) {
 });
 
 // Method to compare password
-restaurantSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
+restaurantSchema.methods.comparePassword = async function (
+  candidatePassword: string
+): Promise<boolean> {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
@@ -67,4 +70,5 @@ restaurantSchema.methods.comparePassword = async function(candidatePassword: str
   }
 };
 
-export const Restaurant = mongoose.models.Restaurant || mongoose.model('Restaurant', restaurantSchema);
+export const Restaurant =
+  mongoose.models.Restaurant || mongoose.model("Restaurant", restaurantSchema);

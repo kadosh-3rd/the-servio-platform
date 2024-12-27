@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import HeroImage from "@/public/hero.png";
+import HeroImage from "@/public/hero.webp";
 
 export function Hero() {
   return (
@@ -23,7 +23,6 @@ export function Hero() {
 
         <div className="mt-8 mb-12">
           <Link
-            // href="/auth/login"
             href="/dashboard"
             className="bg-primary text-primary-foreground rounded-md px-4 py-2"
           >

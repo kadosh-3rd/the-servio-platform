@@ -1,9 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getRestaurantData } from "@/lib/actions/restaurant";
+import { toast } from "sonner";
+
+interface RestaurantData {
+  businessName: string;
+  ownerName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  licenseNumber?: string;
+  createdAt: string;
+}
 
 interface SalesData {
   name: string;
@@ -11,57 +23,29 @@ interface SalesData {
   amount: number;
 }
 
-const stats = [
-  {
-    title: "Total Revenue",
-    value: "$45,231.89",
-    change: "+20.1%",
-    changeLabel: "from last month",
-    icon: Icons.revenue,
-  },
-  {
-    title: "Orders",
-    value: "+2350",
-    change: "+180.1%",
-    changeLabel: "from last month",
-    icon: Icons.order,
-  },
-  {
-    title: "Active Tables",
-    value: "+12",
-    change: "+19%",
-    changeLabel: "from last hour",
-    icon: Icons.table,
-  },
-  {
-    title: "Inventory Status",
-    value: "95%",
-    change: "+4%",
-    changeLabel: "from last week",
-    icon: Icons.inventory,
-  },
-];
-
-const recentSales = [
+const recentSales: SalesData[] = [
   {
     name: "Olivia Martin",
     email: "olivia.martin@email.com",
-    amount: "+$1,999.00",
+    amount: 1999.0,
   },
   {
     name: "Jackson Lee",
     email: "jackson.lee@email.com",
-    amount: "+$39.00",
+    amount: 39.0,
   },
   {
     name: "Isabella Nguyen",
     email: "isabella.nguyen@email.com",
-    amount: "+$299.00",
+    amount: 299.0,
   },
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [restaurant, setRestaurant] = useState<RestaurantData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -70,6 +54,30 @@ export default function DashboardPage() {
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    async function fetchRestaurantData() {
+      try {
+        const result = await getRestaurantData();
+        if (result.error) {
+          toast.error(result.error);
+          if (result.error === "Not authenticated") {
+            router.push("/auth/login");
+          }
+          return;
+        }
+        if (result.success && result.data) {
+          setRestaurant(result.data);
+        }
+      } catch (error) {
+        toast.error("Failed to fetch restaurant data");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRestaurantData();
+  }, [router]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -82,12 +90,22 @@ export default function DashboardPage() {
     return new Intl.NumberFormat("en-US").format(num);
   };
 
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Icons.spinner className="size-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 space-y-4 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <h2 className="text-3xl font-bold tracking-tight">
+              {restaurant?.businessName || "Dashboard"}
+            </h2>
             <p className="text-muted-foreground">
               {currentTime.toLocaleString("en-US", {
                 weekday: "long",
@@ -101,7 +119,7 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex items-center space-x-2">
-            <Card className="bg-primary/5">
+            <Card className="bg-background">
               <CardContent className="py-2 px-4">
                 <p className="text-sm font-medium">Status</p>
                 <p className="text-2xl font-bold text-primary">Open</p>
@@ -111,37 +129,111 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <Card key={stat.title}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <stat.icon className="h-4 w-4 text-muted-foreground" />
-                </div>
-                <div className="flex items-baseline justify-between">
-                  <h2 className="text-2xl font-bold">{stat.value}</h2>
-                  <p className="text-sm text-green-500">
-                    {stat.change}
-                    <span className="text-xs text-muted-foreground ml-1">
-                      {stat.changeLabel}
-                    </span>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Overview</CardTitle>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Revenue
+              </CardTitle>
+              <Icons.revenue className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="h-[200px] w-full bg-muted/10 rounded-lg flex items-center justify-center">
-                <p className="text-muted-foreground">Chart coming soon...</p>
+              <div className="text-2xl font-bold">
+                {formatCurrency(45231.89)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Orders</CardTitle>
+              <Icons.order className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">+{formatNumber(2350)}</div>
+              <p className="text-xs text-muted-foreground">
+                +180.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Active Tables
+              </CardTitle>
+              <Icons.table className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">+12</div>
+              <p className="text-xs text-muted-foreground">
+                +19% from last hour
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Inventory Status
+              </CardTitle>
+              <Icons.inventory className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">95%</div>
+              <p className="text-xs text-muted-foreground">
+                +4% from last week
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Restaurant Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Owner
+                  </p>
+                  <p className="text-base">{restaurant?.ownerName}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Email
+                  </p>
+                  <p className="text-base">{restaurant?.email}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Phone
+                  </p>
+                  <p className="text-base">{restaurant?.phoneNumber}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Address
+                  </p>
+                  <p className="text-base">{restaurant?.address}</p>
+                </div>
+                {restaurant?.licenseNumber && (
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      License
+                    </p>
+                    <p className="text-base">{restaurant.licenseNumber}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Member Since
+                  </p>
+                  <p className="text-base">
+                    {new Date(restaurant?.createdAt || "").toLocaleDateString()}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -149,29 +241,22 @@ export default function DashboardPage() {
           <Card className="col-span-3">
             <CardHeader>
               <CardTitle>Recent Sales</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                You made 265 sales this month.
-              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-8">
-                {recentSales.map((sale) => (
-                  <div key={sale.email} className="flex items-center">
-                    <Avatar className="h-9 w-9">
-                      <AvatarFallback>
-                        {sale.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium">{sale.name}</p>
+                {recentSales.map((sale, index) => (
+                  <div key={index} className="flex items-center">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {sale.name}
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {sale.email}
                       </p>
                     </div>
-                    <div className="ml-auto font-medium">{sale.amount}</div>
+                    <div className="ml-auto font-medium">
+                      {formatCurrency(sale.amount)}
+                    </div>
                   </div>
                 ))}
               </div>

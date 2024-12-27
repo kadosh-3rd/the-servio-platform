@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useTransition } from "react";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/lib/validations/auth";
 import { loginRestaurant } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,28 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Icons } from "@/components/icons";
-import type { z } from "zod";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import type { ActionResponse } from "@/lib/types";
-
-function SubmitButton({ loading }: { loading: boolean }) {
-  const { pending } = useFormStatus();
-  const isLoading = pending || loading;
-
-  return (
-    <Button type="submit" className="w-full" disabled={isLoading}>
-      {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-      {isLoading ? "Signing in..." : "Sign In"}
-    </Button>
-  );
-}
+import SubmitButton from "./submit-button";
 
 export default function LoginForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [state, formAction] = useActionState<ActionResponse>(loginRestaurant, null);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -48,41 +31,22 @@ export default function LoginForm() {
     },
   });
 
-  useEffect(() => {
-    if (state?.error) {
-      toast.error(state.error);
-    }
-    if (state?.success) {
-      toast.success(state.message || "Login successful!");
-      form.reset();
-      startTransition(() => {
-        router.push("/dashboard");
-      });
-    }
-  }, [state, form, router]);
-
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        startTransition(async () => {
-          try {
-            const result = await formAction(values);
-            if (result?.error) {
-              reject(result.error);
-            } else {
-              resolve(result);
-            }
-          } catch (error) {
-            reject(error);
-          }
-        });
-      }),
-      {
-        loading: "Logging in...",
-        success: "Logged in successfully!",
-        error: (error) => `${error}`,
+    startTransition(async () => {
+      try {
+        const result = await loginRestaurant(null, values);
+        if (result?.error) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success(result?.message || "Login successful!");
+        form.reset();
+        router.push("/dashboard");
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : "Login failed");
       }
-    );
+    });
   }
 
   return (
@@ -122,7 +86,10 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <SubmitButton loading={isPending} />
+        <SubmitButton
+          loading={isPending}
+          btnText={isPending ? "Signing in..." : "Sign In"}
+        />
       </form>
     </Form>
   );

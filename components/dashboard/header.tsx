@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useTransition } from "react";
+import { useActionState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { logoutRestaurant } from "@/lib/actions/auth";
 import { Icons } from "@/components/icons";
@@ -16,11 +15,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ThemeToggle } from "../theme-toogle";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Menu } from "lucide-react";
+import { DashboardLinks } from "./dashboard-links";
 
-export default function DashboardHeader() {
+export default function Header() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [state, formAction] = useActionState(logoutRestaurant, null);
+  const [state, formAction] = useActionState<ActionResponse>(
+    logoutRestaurant,
+    null
+  );
 
   useEffect(() => {
     if (state?.success) {
@@ -41,19 +47,25 @@ export default function DashboardHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <div className="flex items-center gap-4">
+    <header className="sticky flex items-center justify-between gap-4 px-4 lg:h-[60px] lg:px-6 top-0 z-50 w-full h-14 border-0 backdrop-blur supports-[backdrop-filter]:bg-muted/5">
+      <Sheet>
+        <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="md:hidden">
-            <Icons.menu className="h-6 w-6" />
-            <span className="sr-only">Toggle sidebar</span>
+            <Menu size="size-5" />
           </Button>
-        </div>
+        </SheetTrigger>
+        <SheetContent side={"left"}>
+          <nav className="grid gap-2 mt-10">
+            <DashboardLinks />
+          </nav>
+        </SheetContent>
+      </Sheet>
 
+      <div className="flex items-center ml-auto gap-x-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
+            <Button variant="ghost" className="relative size-8 rounded-full">
+              <Avatar className="size-8">
                 <AvatarImage src="" alt="Profile" />
                 <AvatarFallback>SR</AvatarFallback>
               </Avatar>
@@ -72,20 +84,22 @@ export default function DashboardHeader() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Icons.staff className="mr-2 h-4 w-4" />
+              <Icons.staff className="mr-2 size-4" />
               <span>Profile</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Icons.settings className="mr-2 h-4 w-4" />
+              <Icons.settings className="mr-2 size-4" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
-              <Icons.logout className="mr-2 h-4 w-4" />
+              <Icons.logout className="mr-2 size-4" />
               <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <ThemeToggle />
       </div>
     </header>
   );
