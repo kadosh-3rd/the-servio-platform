@@ -1,29 +1,23 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { Restaurant } from "@/models/Restaurant";
 import dbConnect from "@/lib/db/mongoose";
-import jwt from "jsonwebtoken";
-
-interface JwtPayload {
-  restaurantId: string;
-}
+import { getSession } from "@/lib/session";
 
 export async function getRestaurantData() {
   try {
-    const token = (await cookies()).get("token")?.value;
-    if (!token) {
+    const session = await getSession();
+    if (!session.isLoggedIn) {
       return { error: "Not authenticated" };
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-    if (!decoded.restaurantId) {
-      return { error: "Invalid token" };
+    if (!session.restaurantId) {
+      return { error: "No restaurant associated with this account" };
     }
 
     await dbConnect();
 
-    const restaurant = await Restaurant.findById(decoded.restaurantId).select(
+    const restaurant = await Restaurant.findById(session.restaurantId).select(
       "-password"
     );
     if (!restaurant) {
