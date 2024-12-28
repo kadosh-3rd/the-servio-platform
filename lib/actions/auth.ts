@@ -1,9 +1,9 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { Restaurant } from "@/models/Restaurant";
 import dbConnect from "@/lib/db/mongoose";
-import { registerSchema, loginSchema, signToken } from "@/lib/validations/auth";
+import { registerSchema, loginSchema } from "@/lib/validations/auth";
+import { getSession } from "@/lib/session";
 import { z } from "zod";
 
 export async function registerRestaurant(
@@ -60,19 +60,30 @@ export async function loginRestaurant(
         error: "Invalid credentials",
       };
 
-    const token = signToken({ restaurantId: restaurant._id });
+    // Get session and set user data
+    const session = await getSession();
+    session.userId = restaurant._id.toString();
+    session.restaurantId = restaurant._id.toString();
+    session.role = "OWNER";
+    session.isLoggedIn = true;
+    await session.save();
 
-    // Set HTTP-only cookie
-    (await cookies()).set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 1 day
-    });
+    // Check if profile is complete
+    const isComplete = Boolean(
+      restaurant.name &&
+      restaurant.cuisine?.length > 0 &&
+      restaurant.settings?.currency &&
+      restaurant.settings?.timezone &&
+      restaurant.businessHours?.length > 0 &&
+      restaurant.menu?.categories?.length > 0
+    );
 
     return {
       success: true,
       message: "Login successful!",
+      data: {
+        redirectUrl: isComplete ? "/dashboard" : "/setup",
+      },
     };
   } catch (error: any) {
     return {
@@ -83,7 +94,9 @@ export async function loginRestaurant(
 
 export async function logoutRestaurant(): Promise<ActionResponse> {
   try {
-    (await cookies()).delete("token");
+    const session = await getSession();
+    session.destroy();
+    
     return {
       success: true,
       message: "Logged out successfully",

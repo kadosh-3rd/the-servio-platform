@@ -42,7 +42,12 @@ export default function LoginForm() {
 
         toast.success(result?.message || "Login successful!");
         form.reset();
-        router.push("/dashboard");
+
+        // Wait a bit for the cookie to be set
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
+        // Use the redirect URL from the response
+        router.push(result?.data?.redirectUrl || "/dashboard");
       } catch (error) {
         toast.error(error instanceof Error ? error.message : "Login failed");
       }

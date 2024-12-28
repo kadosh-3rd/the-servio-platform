@@ -16,7 +16,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "../theme-toogle";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import { Menu } from "lucide-react";
 import { DashboardLinks } from "./dashboard-links";
 
@@ -50,11 +57,21 @@ export default function Header() {
     <header className="sticky flex items-center justify-between gap-4 px-4 lg:h-[60px] lg:px-6 top-0 z-50 w-full h-14 border-0 backdrop-blur supports-[backdrop-filter]:bg-muted/5">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden rounded-full"
+          >
             <Menu size="size-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side={"left"}>
+        <SheetContent side={"left"} className="rounded-tr-3xl rounded-br-3xl">
+          <SheetHeader>
+            <SheetTitle className="text-2xl font-bold">Servio</SheetTitle>
+            <SheetDescription className="italic">
+              Powering smarter restaurants.
+            </SheetDescription>
+          </SheetHeader>
           <nav className="grid gap-2 mt-10">
             <DashboardLinks />
           </nav>

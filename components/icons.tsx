@@ -13,6 +13,7 @@ import {
   Settings,
   ChevronRight,
   Menu,
+  UploadCloud,
   TypeIcon as type,
   LucideIcon,
 } from "lucide-react";
@@ -34,4 +35,5 @@ export const Icons = {
   dashboard: Home,
   settings: Settings,
   chevronRight: ChevronRight,
+  upload: UploadCloud,
 };

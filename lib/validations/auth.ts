@@ -1,5 +1,3 @@
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 import * as z from "zod";
 
 export const registerSchema = z.object({
@@ -35,30 +33,3 @@ export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
-
-export const signToken = (payload: { restaurantId: string }) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
-};
-
-export const verifyToken = (token: string) => {
-  try {
-    return jwt.verify(token, JWT_SECRET) as { restaurantId: string };
-  } catch (error) {
-    return null;
-  }
-};
-
-export const getAuthToken = (req: NextRequest) => {
-  const authHeader = req.headers.get("authorization");
-  if (!authHeader?.startsWith("Bearer ")) return null;
-  return authHeader.split(" ")[1];
-};
-
-export const isAuthenticated = async (req: NextRequest) => {
-  const token = getAuthToken(req);
-  if (!token) return null;
-
-  return verifyToken(token);
-};

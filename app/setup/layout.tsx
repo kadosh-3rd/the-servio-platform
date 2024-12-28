@@ -3,10 +3,9 @@ import { Geist } from "next/font/google";
 import "@/app/globals.css";
 
 import { ThemeProvider } from "@/lib/providers/theme-provider";
-import Sidebar from "@/components/dashboard/sidebar";
-import Header from "@/components/dashboard/header";
-import { checkProfileCompletion } from "@/lib/actions/profile";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { SetupProgress } from "@/components/setup/progress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,20 +14,16 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard | Servio",
-  description: "Manage your restaurant operations with ease.",
+  title: "Complete Setup | Servio",
+  description:
+    "Let's complete your restaurant setup to start using the platform.",
 };
 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
-
-export default async function DashboardLayout({
+export default function SetupLayout({
   children,
-}: DashboardLayoutProps) {
-  // Check if profile is complete
-  await checkProfileCompletion();
-
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -43,13 +38,19 @@ export default async function DashboardLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen overflow-hidden">
-            <Sidebar />
-            <div className="flex-1 overflow-y-auto">
-              <Header />
-              <main className="p-6">{children}</main>
+          <div className="min-h-screen bg-background flex flex-col">
+            <div className="sticky top-0 z-10 bg-background border-b">
+              <div className="container max-w-screen-xl mx-auto py-4">
+                <SetupProgress />
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto">
+              <div className="container max-w-screen-xl mx-auto py-6">
+                {children}
+              </div>
             </div>
           </div>
+          <Toaster richColors closeButton />
         </ThemeProvider>
       </body>
     </html>
