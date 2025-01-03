@@ -1,7 +1,7 @@
 "use server";
 
 import { Restaurant } from "@/models/Restaurant";
-import dbConnect from "@/lib/db/mongoose";
+import dbConnect from "@/lib/mongoose";
 import { registerSchema, loginSchema } from "@/lib/validations/auth";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
@@ -71,11 +71,11 @@ export async function loginRestaurant(
     // Check if profile is complete
     const isComplete = Boolean(
       restaurant.name &&
-      restaurant.cuisine?.length > 0 &&
-      restaurant.settings?.currency &&
-      restaurant.settings?.timezone &&
-      restaurant.businessHours?.length > 0 &&
-      restaurant.menu?.categories?.length > 0
+        restaurant.cuisine?.length > 0 &&
+        restaurant.settings?.currency &&
+        restaurant.settings?.timezone &&
+        restaurant.businessHours?.length > 0 &&
+        restaurant.menu?.categories?.length > 0
     );
 
     return {
@@ -96,7 +96,7 @@ export async function logoutRestaurant(): Promise<ActionResponse> {
   try {
     const session = await getSession();
     session.destroy();
-    
+
     return {
       success: true,
       message: "Logged out successfully",
