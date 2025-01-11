@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Login | Servio",
+  title: "Login | Wermi",
   description:
-    "Join Servio's restaurant management platform and streamline your operations today.",
+    "Join Wermi's restaurant management platform and streamline your operations today.",
 };
 
 export default function LoginPage() {
@@ -34,12 +34,12 @@ export default function LoginPage() {
           >
             <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
           </svg>
-          Servio Platform
+          Wermi Platform
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              "Servio has revolutionized how we manage our restaurant. The
+              "Wermi has revolutionized how we manage our restaurant. The
               platform is intuitive, efficient, and has helped us grow our
               business significantly."
             </p>

@@ -67,7 +67,7 @@ export default function Header() {
         </SheetTrigger>
         <SheetContent side={"left"} className="rounded-tr-3xl rounded-br-3xl">
           <SheetHeader>
-            <SheetTitle className="text-2xl font-bold">Servio</SheetTitle>
+            <SheetTitle className="text-2xl font-bold">Wermi</SheetTitle>
             <SheetDescription className="italic">
               Powering smarter restaurants.
             </SheetDescription>

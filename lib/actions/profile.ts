@@ -4,7 +4,7 @@ import { getSession } from "@/lib/session";
 import { Restaurant } from "@/models/Restaurant";
 import { MenuCategory } from "@/models/MenuCategory";
 import { MenuItem } from "@/models/MenuItem";
-import dbConnect from "@/lib/db/mongoose";
+import dbConnect from "@/lib/mongoose";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 

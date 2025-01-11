@@ -14,7 +14,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Complete Setup | Servio",
+  title: "Complete Setup | Wermi",
   description:
     "Let's complete your restaurant setup to start using the platform.",
 };

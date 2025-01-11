@@ -7,29 +7,29 @@ import {
 
 const faqs = [
   {
-    question: "What is Servio?",
+    question: "What is Wermi?",
     answer:
-      "Servio is a comprehensive digital solution designed to modernize and streamline restaurant operations while enhancing the customer dining experience. It includes a management dashboard, customer-facing web interface, and an analytics engine.",
+      "Wermi is a comprehensive digital solution designed to modernize and streamline restaurant operations while enhancing the customer dining experience. It includes a management dashboard, customer-facing web interface, and an analytics engine.",
   },
   {
-    question: "How does Servio improve restaurant efficiency?",
+    question: "How does Wermi improve restaurant efficiency?",
     answer:
-      "Servio provides real-time insights and operational control through its management dashboard, enabling efficient menu management, order processing, inventory control, and staff management.",
+      "Wermi provides real-time insights and operational control through its management dashboard, enabling efficient menu management, order processing, inventory control, and staff management.",
   },
   {
-    question: "Is Servio easy for customers to use?",
+    question: "Is Wermi easy for customers to use?",
     answer:
-      "Yes, Servio offers a frictionless dining experience through a progressive web application accessible via QR code. Customers can browse menus, place orders, and process payments without downloading an app.",
+      "Yes, Wermi offers a frictionless dining experience through a progressive web application accessible via QR code. Customers can browse menus, place orders, and process payments without downloading an app.",
   },
   {
-    question: "What kind of analytics does Servio provide?",
+    question: "What kind of analytics does Wermi provide?",
     answer:
-      "Servio's analytics engine processes operational data to generate actionable insights on customer behavior, sales patterns, and operational efficiency, enabling data-driven decision-making for restaurant managers.",
+      "Wermi's analytics engine processes operational data to generate actionable insights on customer behavior, sales patterns, and operational efficiency, enabling data-driven decision-making for restaurant managers.",
   },
   {
-    question: "How can Servio help increase revenue?",
+    question: "How can Wermi help increase revenue?",
     answer:
-      "By streamlining operations, enhancing customer experience, and providing valuable business insights, Servio helps restaurants increase efficiency, reduce costs, and improve customer satisfaction, ultimately leading to increased revenue.",
+      "By streamlining operations, enhancing customer experience, and providing valuable business insights, Wermi helps restaurants increase efficiency, reduce costs, and improve customer satisfaction, ultimately leading to increased revenue.",
   },
 ];
 

@@ -6,21 +6,21 @@ const testimonials = [
     name: "Sarah Johnson",
     role: "Restaurant Owner",
     content:
-      "Servio has transformed how we manage our restaurant. The efficiency gains are remarkable, and our customers love the seamless ordering experience.",
+      "Wermi has transformed how we manage our restaurant. The efficiency gains are remarkable, and our customers love the seamless ordering experience.",
     image: "/placeholder.svg?height=100&width=100",
   },
   {
     name: "Michael Chen",
     role: "Head Chef",
     content:
-      "The kitchen management features in Servio have streamlined our operations. We're able to handle more orders with less stress.",
+      "The kitchen management features in Wermi have streamlined our operations. We're able to handle more orders with less stress.",
     image: "/placeholder.svg?height=100&width=100",
   },
   {
     name: "Emily Rodriguez",
     role: "Restaurant Manager",
     content:
-      "The analytics provided by Servio have been eye-opening. We've been able to make data-driven decisions that have significantly boosted our revenue.",
+      "The analytics provided by Wermi have been eye-opening. We've been able to make data-driven decisions that have significantly boosted our revenue.",
     image: "/placeholder.svg?height=100&width=100",
   },
 ];

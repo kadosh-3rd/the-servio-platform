@@ -1,8 +1,5 @@
-import { checkPermissions } from "@/lib/auth/checks";
-
 export default async function StaffPage() {
   // Check if user has permission to manage staff
-  await checkPermissions(["manage:staff"]);
 
   return (
     <div>

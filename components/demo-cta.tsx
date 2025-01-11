@@ -11,7 +11,7 @@ export function DemoCTA() {
               Ready to Revolutionize Your Restaurant?
             </h2>
             <p className="max-w-[900px] text-primary-foreground/90 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              See Servio in action and discover how it can transform your
+              See Wermi in action and discover how it can transform your
               business. Schedule a personalized demo today.
             </p>
           </div>

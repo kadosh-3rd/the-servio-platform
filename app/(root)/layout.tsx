@@ -14,9 +14,9 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Servio - Powering smarter restaurants",
+  title: "Wermi - Powering smarter restaurants",
   description:
-    "Modernize your restaurant operations and enhance customer experience with Servio.",
+    "Modernize your restaurant operations and enhance customer experience with Wermi.",
 };
 
 export default function RootLayout({

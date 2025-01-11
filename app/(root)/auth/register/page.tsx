@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import RegistrationForm from "@/components/registration-form";
 
 export const metadata: Metadata = {
-  title: "Register Your Restaurant | Servio",
+  title: "Register Your Restaurant | Wermi",
   description:
-    "Join Servio's restaurant management platform and streamline your operations today.",
+    "Join Wermi's restaurant management platform and streamline your operations today.",
 };
 
 export default function RegisterPage() {

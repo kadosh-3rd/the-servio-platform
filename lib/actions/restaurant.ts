@@ -1,7 +1,7 @@
 "use server";
 
 import { Restaurant } from "@/models/Restaurant";
-import dbConnect from "@/lib/db/mongoose";
+import dbConnect from "@/lib/mongoose";
 import { getSession } from "@/lib/session";
 
 export async function getRestaurantData() {
