@@ -11,7 +11,9 @@ export default function Sidebar() {
         <div className="h-14 flex items-center border-0 px-4 lg:h-[60px] lg:px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
             <Icons.restaurantMenu className="size-6" />
-            <span className="text-2xl font-bold">Wermi</span>
+            <h3 className="text-2xl font-bold">
+              Wermi<span className="text-blue-500 font-extrabold">.</span>
+            </h3>
           </Link>
         </div>
 
