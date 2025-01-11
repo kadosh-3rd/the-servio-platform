@@ -9,8 +9,8 @@ export function Header() {
       <div className="flex justify-between items-center py-5">
         <Link href="/">
           <h3 className="text-3xl font-semibold">
-            Wer
-            <span className="text-blue-500 font-extrabold">mi</span>
+            Wermi
+            <span className="text-blue-500 font-extrabold">.</span>
           </h3>
         </Link>
 
