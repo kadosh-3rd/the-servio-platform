@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toogle";
-import { superSimpleBeautifulLogo as Logo } from "./super-simple-beautiful-logo";
+import { superSimpleBeautifulLogo as Logo } from "./s2bl";
 
 export function Header() {
   return (

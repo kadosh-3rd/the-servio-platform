@@ -1,7 +1,7 @@
 "use client";
 
 import { DashboardLinks } from "./dashboard-links";
-import { superSimpleBeautifulLogo as Logo } from "../super-simple-beautiful-logo";
+import { superSimpleBeautifulLogo as Logo } from "../s2bl";
 
 export default function Sidebar() {
   return (
