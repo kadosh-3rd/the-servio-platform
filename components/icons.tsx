@@ -14,7 +14,6 @@ import {
   ChevronRight,
   Menu,
   UploadCloud,
-  TypeIcon as type,
   LucideIcon,
 } from "lucide-react";
 
